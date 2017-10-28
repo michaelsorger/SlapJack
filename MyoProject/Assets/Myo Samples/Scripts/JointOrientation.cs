@@ -47,21 +47,44 @@ public class JointOrientation : MonoBehaviour
         horizontalSpeed = horizontalSpeed * thalmicMyo.accelerometer.x;
         verticalSpeed = verticalSpeed * thalmicMyo.accelerometer.y;
 
-        /*Debug.Log("Velocity X: " + hand.velocity.x);
-        Debug.Log("Velocity Y: " + hand.velocity.y);
-        Debug.Log("Velocity Z: " + hand.velocity.z);
-        Debug.Log("Angular X: " + hand.angularVelocity.x);
-        Debug.Log("Angular Y: " + hand.angularVelocity.y);
-        Debug.Log("Angular Z: " + hand.angularVelocity.z);
-        Debug.Log("Max: " + hand.maxAngularVelocity);
-        */
+       
 
-        //Debug.Log(thalmicMyo.gyroscope.x);
+            // Vibrate the Myo armband when a fist is made.
 
-        // Update references when the pose becomes fingers spread or the q key is pressed.
-        bool updateReference = false;
+        
+
+            /*Debug.Log("Velocity X: " + hand.velocity.x);
+            Debug.Log("Velocity Y: " + hand.velocity.y);
+            Debug.Log("Velocity Z: " + hand.velocity.z);
+            Debug.Log("Angular X: " + hand.angularVelocity.x);
+            Debug.Log("Angular Y: " + hand.angularVelocity.y);
+            Debug.Log("Angular Z: " + hand.angularVelocity.z);
+            Debug.Log("Max: " + hand.maxAngularVelocity);
+            */
+
+            //Debug.Log(thalmicMyo.gyroscope.x);
+
+            // Update references when the pose becomes fingers spread or the q key is pressed.
+            bool updateReference = false;
         if (thalmicMyo.pose != _lastPose) {
             _lastPose = thalmicMyo.pose;
+
+            if (thalmicMyo.pose == Pose.WaveIn)
+            {
+                Vector3 current = this.gameObject.GetComponent<Rigidbody>().position;
+                current = new Vector3(current.x - 1, current.y, current.z + 1);
+                this.gameObject.GetComponent<Rigidbody>().position = current;
+                // renderer.material = waveInMaterial;
+
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.WaveOut)
+            {
+                Vector3 current = this.gameObject.GetComponent<Rigidbody>().position;
+                current = new Vector3(current.x + 1, current.y, current.z - 1);
+                this.gameObject.GetComponent<Rigidbody>().position = current;
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
 
             if (thalmicMyo.pose == Pose.Fist)
                 updateReference = true;

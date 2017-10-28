@@ -34,7 +34,7 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-            this.gameObject.GetComponent<Rigidbody>().AddForce(-1000f, 0, -1000f);
+            this.gameObject.GetComponent<Rigidbody>().AddForce(-500f, 0, -500f);
         //if (mouse.thalmicMyo.pose == Pose.FingersSpread)
         //{
         //}

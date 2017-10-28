@@ -47,21 +47,7 @@ public class ColorBoxByPose : MonoBehaviour
             _lastPose = thalmicMyo.pose;
 
             // Vibrate the Myo armband when a fist is made.
-
-            if (thalmicMyo.pose == Pose.WaveIn)
-            {
-                GetComponent<Renderer>().material = waveInMaterial;
-                // renderer.material = waveInMaterial;
-
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
-            else if (thalmicMyo.pose == Pose.WaveOut)
-            {
-                GetComponent<Renderer>().material = waveOutMaterial;
-
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
-            else if (thalmicMyo.pose == Pose.DoubleTap)
+            if (thalmicMyo.pose == Pose.DoubleTap)
             {
                 GetComponent<Renderer>().material = doubleTapMaterial;
 
