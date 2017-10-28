@@ -19,6 +19,8 @@ public class ColorBoxByPose : MonoBehaviour
     public Material waveOutMaterial;
     public Material doubleTapMaterial;
 
+    private Player_Controller player;
+
     public Rigidbody boxBody;
 
     // The pose from the last update. This is used to determine if the pose has changed
@@ -46,15 +48,7 @@ public class ColorBoxByPose : MonoBehaviour
 
             // Vibrate the Myo armband when a fist is made.
 
-            if (thalmicMyo.pose == Pose.FingersSpread)
-            {
-
-                // Change material when wave in, wave out or double tap poses are made.
-                
-
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
-            else if (thalmicMyo.pose == Pose.WaveIn)
+            if (thalmicMyo.pose == Pose.WaveIn)
             {
                 GetComponent<Renderer>().material = waveInMaterial;
                 // renderer.material = waveInMaterial;
