@@ -12,6 +12,8 @@ using VibrationType = Thalmic.Myo.VibrationType;
 // Making the fingers spread pose or pressing the 'r' key resets the reference orientation.
 public class JointOrientation : MonoBehaviour
 {
+    public float horizontalSpeed = 2.0f;
+    public float verticalSpeed = 2.0f;
     // Myo game object to connect with.
     // This object must have a ThalmicMyo script attached.
     public GameObject myo = null;
@@ -33,8 +35,11 @@ public class JointOrientation : MonoBehaviour
     // Update is called once per frame.
     void Update ()
     {
+       
         // Access the ThalmicMyo component attached to the Myo object.
         ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
+        horizontalSpeed = horizontalSpeed * thalmicMyo.accelerometer.x;
+        verticalSpeed = verticalSpeed * thalmicMyo.accelerometer.y;
 
         // Update references when the pose becomes fingers spread or the q key is pressed.
         bool updateReference = false;
