@@ -19,6 +19,7 @@ public class ColorBoxByPose : MonoBehaviour
     public Material waveOutMaterial;
     public Material doubleTapMaterial;
 
+    private LoadSceneOnIndex load;
     private Player_Controller player;
 
     public Rigidbody boxBody;
@@ -49,8 +50,8 @@ public class ColorBoxByPose : MonoBehaviour
             // Vibrate the Myo armband when a fist is made.
             if (thalmicMyo.pose == Pose.DoubleTap)
             {
-                GetComponent<Renderer>().material = doubleTapMaterial;
-
+                //GetComponent<Renderer>().material = doubleTapMaterial;
+                load.LoadSceneByIndex(1);
                 ExtendUnlockAndNotifyUserAction(thalmicMyo);
             }
         }
