@@ -78,6 +78,10 @@ public class Player_Controller : MonoBehaviour
             theCollision.gameObject.GetComponent<Rigidbody>().AddForce(vect.x, 0, vect.z);
             Debug.Log("hit the bat");
             timer = DateTime.Now.Ticks;
+
+            GameObject clone = gameObject;
+            Destroy(gameObject, 10f);
+            Instantiate(clone, new Vector3(160, 0, 161), clone.transform.rotation);
         }
     }
 
