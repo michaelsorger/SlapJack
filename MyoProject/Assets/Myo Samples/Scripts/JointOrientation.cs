@@ -202,4 +202,14 @@ public class JointOrientation : MonoBehaviour
 
         myo.NotifyUserAction ();
     }
+
+    public float getXVal()
+    {
+        return gameObject.transform.position.x;
+    }
+
+    public float getZVal()
+    {
+        return gameObject.transform.position.z;
+    }
 }

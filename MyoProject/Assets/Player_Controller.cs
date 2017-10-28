@@ -15,6 +15,7 @@ public class Player_Controller : MonoBehaviour
     private Vector3 vect;
     float relativeTime;
    public  bool isHit;
+    long timer;
 
     Animator anim;
     CapsuleCollider col_size;
@@ -34,21 +35,28 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-            this.gameObject.GetComponent<Rigidbody>().AddForce(-500f, 0, -500f);
+        if(!isHit)
+        this.gameObject.GetComponent<Rigidbody>().AddForce(-500f, 0, -500f);
         //if (mouse.thalmicMyo.pose == Pose.FingersSpread)
         //{
         //}
         if (isHit)
         {
             vect.y = vect.y - (relativeTime / 1000);
+            vect.x = (vect.x > 0) ? vect.x - (relativeTime / 10000) : 0;
+            vect.z = (vect.z > 0) ? vect.z - (relativeTime / 10000) : 0;
             relativeTime++;
 
-            Vector3 dood = gameObject.transform.position;
-            //if (vect.y < 3)
+            
+            //Vector3 dood = gameObject.transform.position;
+            //if ((DateTime.Now.Ticks - timer) > 300000 && (dood.y < 3))
             //{
-            //    vect.x = vect.x;
-            //    vect.z = vect.z;
+            // //  / this.gameObject.GetComponent<Rigidbody>().AddForce(.5f, .5f, .5f);
+            //    //Vector3 identity = new Vector3(0f, 0f, 0f);
+            //    //gameObject.GetComponent<Rigidbody>().velocity = identity;
             //    isHit = false;
+            //    //rb.velocity = identity;
+            //    Destroy(gameObject, 10.0f);
             //}
         }
         rb.velocity = vect;
@@ -69,6 +77,17 @@ public class Player_Controller : MonoBehaviour
             vect.z = Math.Abs(mouse.thalmicMyo.gyroscope.z / 10);
             theCollision.gameObject.GetComponent<Rigidbody>().AddForce(vect.x, 0, vect.z);
             Debug.Log("hit the bat");
+            timer = DateTime.Now.Ticks;
         }
+    }
+
+    public float getXVal()
+    {
+        return gameObject.transform.position.x;
+    }
+
+    public float getZVal()
+    {
+        return gameObject.transform.position.z;
     }
 }
