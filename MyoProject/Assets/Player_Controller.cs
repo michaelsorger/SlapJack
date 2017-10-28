@@ -2,17 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pose = Thalmic.Myo.Pose;
+
 
 public class Player_Controller : MonoBehaviour
 {
 
-    private Rigidbody rb;
+    public Rigidbody rb;
     public float horizontalSpeed;
     public float verticalSpeed;
     public JointOrientation mouse;
     private Vector3 vect;
     float relativeTime;
-    bool isHit;
+   public  bool isHit;
 
     Animator anim;
     CapsuleCollider col_size;
@@ -32,16 +34,20 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+            this.gameObject.GetComponent<Rigidbody>().AddForce(-1000f, 0, -1000f);
+        //if (mouse.thalmicMyo.pose == Pose.FingersSpread)
+        //{
+        //}
         if (isHit)
         {
             vect.y = vect.y - (relativeTime / 1000);
             relativeTime++;
 
             Vector3 dood = gameObject.transform.position;
-            //if (dood.y < 3)
+            //if (vect.y < 3)
             //{
-            //    vect.x = 0;
-            //    vect.z = 0;
+            //    vect.x = vect.x;
+            //    vect.z = vect.z;
             //    isHit = false;
             //}
         }
