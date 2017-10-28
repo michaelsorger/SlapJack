@@ -18,6 +18,10 @@ public class JointOrientation : MonoBehaviour
     // This object must have a ThalmicMyo script attached.
     public GameObject myo = null;
 
+    public Rigidbody hand = null;
+
+    public ThalmicMyo thalmicMyo;
+
     // A rotation that compensates for the Myo armband's orientation parallel to the ground, i.e. yaw.
     // Once set, the direction the Myo armband is facing becomes "forward" within the program.
     // Set by making the fingers spread pose or pressing "r".
@@ -31,26 +35,39 @@ public class JointOrientation : MonoBehaviour
     // so that actions are only performed upon making them rather than every frame during
     // which they are active.
     private Pose _lastPose = Pose.Unknown;
+    
 
     // Update is called once per frame.
     void Update ()
     {
-       
+       hand = gameObject.GetComponent<Rigidbody>();
         // Access the ThalmicMyo component attached to the Myo object.
-        ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
+        thalmicMyo = myo.GetComponent<ThalmicMyo> ();
+
         horizontalSpeed = horizontalSpeed * thalmicMyo.accelerometer.x;
         verticalSpeed = verticalSpeed * thalmicMyo.accelerometer.y;
+
+        /*Debug.Log("Velocity X: " + hand.velocity.x);
+        Debug.Log("Velocity Y: " + hand.velocity.y);
+        Debug.Log("Velocity Z: " + hand.velocity.z);
+        Debug.Log("Angular X: " + hand.angularVelocity.x);
+        Debug.Log("Angular Y: " + hand.angularVelocity.y);
+        Debug.Log("Angular Z: " + hand.angularVelocity.z);
+        Debug.Log("Max: " + hand.maxAngularVelocity);
+        */
+
+        //Debug.Log(thalmicMyo.gyroscope.x);
 
         // Update references when the pose becomes fingers spread or the q key is pressed.
         bool updateReference = false;
         if (thalmicMyo.pose != _lastPose) {
             _lastPose = thalmicMyo.pose;
 
-            if (thalmicMyo.pose == Pose.FingersSpread) {
+            if (thalmicMyo.pose == Pose.Fist)
                 updateReference = true;
 
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
+            ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            
         }
         if (Input.GetKeyDown ("r")) {
             updateReference = true;
@@ -76,7 +93,7 @@ public class JointOrientation : MonoBehaviour
         }
 
         // Current zero roll vector and roll value.
-        Vector3 zeroRoll = computeZeroRollVector (myo.transform.forward);
+         Vector3 zeroRoll = computeZeroRollVector (myo.transform.forward);
         float roll = rollFromZero (zeroRoll, myo.transform.forward, myo.transform.up);
 
         // The relative roll is simply how much the current roll has changed relative to the reference roll.

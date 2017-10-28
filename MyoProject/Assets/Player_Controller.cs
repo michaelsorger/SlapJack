@@ -1,39 +1,67 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Controller : MonoBehaviour { 
+public class Player_Controller : MonoBehaviour
+{
 
     private Rigidbody rb;
     public float horizontalSpeed;
     public float verticalSpeed;
     public JointOrientation mouse;
     private Vector3 vect;
+    float relativeTime;
+    bool isHit;
 
     Animator anim;
     CapsuleCollider col_size;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         rb = gameObject.GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         horizontalSpeed = mouse.horizontalSpeed;
         verticalSpeed = mouse.verticalSpeed;
         vect = new Vector3(0, 0, 0);
-	}
+        relativeTime = 0;
+        isHit = false;
+    }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
+        if (isHit)
+        {
+            vect.y = vect.y - (relativeTime / 1000);
+            relativeTime++;
+
+            Vector3 dood = gameObject.transform.position;
+            //if (dood.y < 3)
+            //{
+            //    vect.x = 0;
+            //    vect.z = 0;
+            //    isHit = false;
+            //}
+        }
         rb.velocity = vect;
     }
-       
+
     void OnCollisionEnter(Collision theCollision)
     {
-       if(theCollision.gameObject.name == "Joint")
+        if (theCollision.gameObject.name == "Joint")
         {
-            theCollision.gameObject.GetComponent<Rigidbody>().AddForce(horizontalSpeed * 100, 0, verticalSpeed);
-            vect.y = verticalSpeed;
-            vect.x = (horizontalSpeed * 100);
+            isHit = true;
+            //theCollision.gameObject.GetComponent<Rigidbody>().AddForce(horizontalSpeed * 10, 0, verticalSpeed);
+            //vect.y = verticalSpeed * 5;
+            //vect.x = (horizontalSpeed * 10);
+            //vect.z = verticalSpeed * 5;
+
+            vect.y = Math.Abs(mouse.thalmicMyo.gyroscope.y / 10);
+            vect.x = Math.Abs(mouse.thalmicMyo.gyroscope.x / 10);
+            vect.z = Math.Abs(mouse.thalmicMyo.gyroscope.z / 10);
+            theCollision.gameObject.GetComponent<Rigidbody>().AddForce(vect.x, 0, vect.z);
             Debug.Log("hit the bat");
         }
     }

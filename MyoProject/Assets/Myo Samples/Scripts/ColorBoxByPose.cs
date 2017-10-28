@@ -19,11 +19,17 @@ public class ColorBoxByPose : MonoBehaviour
     public Material waveOutMaterial;
     public Material doubleTapMaterial;
 
+    public Rigidbody boxBody;
+
     // The pose from the last update. This is used to determine if the pose has changed
     // so that actions are only performed upon making them rather than every frame during
     // which they are active.
     private Pose _lastPose = Pose.Unknown;
 
+    void Start()
+    {
+        boxBody = gameObject.GetComponent<Rigidbody>();
+    }
     // Update is called once per frame.
     void Update ()
     {
@@ -39,25 +45,33 @@ public class ColorBoxByPose : MonoBehaviour
             _lastPose = thalmicMyo.pose;
 
             // Vibrate the Myo armband when a fist is made.
-            if (thalmicMyo.pose == Pose.Fist) {
-                thalmicMyo.Vibrate (VibrationType.Medium);
 
-                ExtendUnlockAndNotifyUserAction (thalmicMyo);
+            if (thalmicMyo.pose == Pose.FingersSpread)
+            {
 
-            // Change material when wave in, wave out or double tap poses are made.
-            } else if (thalmicMyo.pose == Pose.WaveIn) {
+                // Change material when wave in, wave out or double tap poses are made.
+                
+
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.WaveIn)
+            {
                 GetComponent<Renderer>().material = waveInMaterial;
-               // renderer.material = waveInMaterial;
+                // renderer.material = waveInMaterial;
 
-                ExtendUnlockAndNotifyUserAction (thalmicMyo);
-            } else if (thalmicMyo.pose == Pose.WaveOut) {
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.WaveOut)
+            {
                 GetComponent<Renderer>().material = waveOutMaterial;
 
-                ExtendUnlockAndNotifyUserAction (thalmicMyo);
-            } else if (thalmicMyo.pose == Pose.DoubleTap) {
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.DoubleTap)
+            {
                 GetComponent<Renderer>().material = doubleTapMaterial;
 
-                ExtendUnlockAndNotifyUserAction (thalmicMyo);
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
             }
         }
     }
